@@ -1,11 +1,14 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Checklist } from "@/components/checklist/checklist";
 import { BottomNav } from "@/components/ui/bottom-nav";
+import { SetupNotice } from "@/components/ui/setup-notice";
 import { filterHabitsForDate } from "@/lib/frequency";
 import type { Habit, Completion } from "@/types/database";
 
 export default async function TodayPage() {
+  if (!isSupabaseConfigured()) return <SetupNotice />;
+
   const supabase = await createClient();
   const {
     data: { user },

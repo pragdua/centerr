@@ -1,10 +1,13 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { HabitList } from "@/components/template/habit-list";
 import { BottomNav } from "@/components/ui/bottom-nav";
+import { SetupNotice } from "@/components/ui/setup-notice";
 import type { Habit } from "@/types/database";
 
 export default async function TemplatePage() {
+  if (!isSupabaseConfigured()) return <SetupNotice />;
+
   const supabase = await createClient();
   const {
     data: { user },

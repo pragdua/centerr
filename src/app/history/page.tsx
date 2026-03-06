@@ -1,9 +1,12 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Calendar } from "@/components/history/calendar";
 import { BottomNav } from "@/components/ui/bottom-nav";
+import { SetupNotice } from "@/components/ui/setup-notice";
 
 export default async function HistoryPage() {
+  if (!isSupabaseConfigured()) return <SetupNotice />;
+
   const supabase = await createClient();
   const {
     data: { user },
