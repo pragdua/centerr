@@ -11,6 +11,7 @@ export function useHaptics() {
     celebrate: () => trigger("success"),
     tap: () => trigger("selection"),
     drag: () => trigger("medium"),
+    buzz: () => trigger("buzz"),
     error: () => trigger("error"),
     cancel,
   };
