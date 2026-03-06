@@ -1,0 +1,23 @@
+{
+  "name": "centerr",
+  "short_name": "centerr",
+  "description": "Daily habit checklist",
+  "start_url": "/today",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#FFFFFF",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
