@@ -23,7 +23,7 @@ export function ChecklistItem({
   const holdStartRef = useRef(0);
   const rafRef = useRef(0);
   const buzzIntervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
-  const completedRef = useRef(false);
+  const holdCompletedRef = useRef(false);
   const haptics = useHaptics();
 
   // Cleanup on unmount
@@ -38,12 +38,13 @@ export function ChecklistItem({
     (e: React.PointerEvent) => {
       if (completed) return;
       e.preventDefault();
+      (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
 
       setIsHolding(true);
-      completedRef.current = false;
+      holdCompletedRef.current = false;
       holdStartRef.current = Date.now();
 
-      // Start buzz haptic loop
+      // Start buzz haptic loop — short 30ms pulses every 80ms
       haptics.buzz();
       buzzIntervalRef.current = setInterval(() => {
         haptics.buzz();
@@ -57,7 +58,7 @@ export function ChecklistItem({
 
         if (progress >= 1) {
           clearInterval(buzzIntervalRef.current);
-          completedRef.current = true;
+          holdCompletedRef.current = true;
           haptics.checkHabit();
           onToggle(habit.id, true);
           setIsHolding(false);
@@ -84,7 +85,14 @@ export function ChecklistItem({
 
   const handlePointerUp = useCallback(() => {
     cancelHold();
-    // Tap to uncheck
+
+    // If we just completed via hold, don't uncheck
+    if (holdCompletedRef.current) {
+      holdCompletedRef.current = false;
+      return;
+    }
+
+    // Tap to uncheck (only if already completed)
     if (completed) {
       haptics.uncheckHabit();
       onToggle(habit.id, false);

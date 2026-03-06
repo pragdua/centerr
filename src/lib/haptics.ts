@@ -11,7 +11,8 @@ export function useHaptics() {
     celebrate: () => trigger("success"),
     tap: () => trigger("selection"),
     drag: () => trigger("medium"),
-    buzz: () => trigger("buzz"),
+    // Short 30ms pulse for rapid hold-to-check feedback
+    buzz: () => trigger({ pattern: [{ duration: 30, intensity: 0.8 }] }),
     error: () => trigger("error"),
     cancel,
   };
